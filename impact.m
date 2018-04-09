@@ -1,4 +1,4 @@
-function [x_after,z_after]=impact(x)
+function [x_after,z_after,delta_qdot]=impact(x)
     [r,m,Mh,Mt,l,~]=model_params_three_link_numerical_value;
     
     
@@ -54,7 +54,12 @@ function [x_after,z_after]=impact(x)
     x_after(5)=dqe_plus_1(1);
     x_after(6)=dqe_plus_1(3);
     z_after=dqe_plus_1(4:5);
-    
+    R=[0 1 0;1 0 0;0 0 1];
+    drdqs=[r*cos(theta1) 0 0;
+           -r*sin(theta1) 0 0];
+    delta_f=-(E/De*E')\E*[eye(3);drdqs];
+    delta_qdot_e=De\E'*delta_f+[eye(3);drdqs];
+    delta_qdot=[R zeros(3,2)]*delta_qdot_e;
     
     
 end

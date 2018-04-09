@@ -19,17 +19,13 @@ function [H,LfH,dLfH]=feedback_linearization(x,Fx,Gx)
     %LfH(2,1)=dth2 - dth1*((th1 - th1d)*(a02 + a12*th1 + a22*th1^2 + a32*th1^3) + (th1 + th1d)*(a02 + a12*th1 + a22*th1^2 + a32*th1^3) + (th1 + th1d)*(th1 - th1d)*(a12 + 2*a22*th1 + 3*a32*th1^2) - 1);
     LfH=[0 0 1 0 0 0;
          1 1 0 0 0 0]*Fx;
+    
     dLfH=zeros(2,6);
-    %{
     dLfH(1,1)=-dth1*(2*a21 + 6*a31*th1);
     dLfH(1,4)=- a11 - 2*a21*th1 - 3*a31*th1^2;
     dLfH(1,6)=1;
     dLfH(2,1)=-dth1*(2*a02 + 2*(th1 + th1d)*(a12 + 2*a22*th1 + 3*a32*th1^2) + 2*a12*th1 + 2*(th1 - th1d)*(a12 + 2*a22*th1 + 3*a32*th1^2) + 2*a22*th1^2 + 2*a32*th1^3 + (th1 + th1d)*(2*a22 + 6*a32*th1)*(th1 - th1d));
     dLfH(2,4)=1 - (th1 + th1d)*(a02 + a12*th1 + a22*th1^2 + a32*th1^3) - (th1 + th1d)*(th1 - th1d)*(a12 + 2*a22*th1 + 3*a32*th1^2) - (th1 - th1d)*(a02 + a12*th1 + a22*th1^2 + a32*th1^3);
     dLfH(2,5)=1;
-    %}
-    %theta3_desired=pi/6;
-    %H=[theta3-theta3_desired;theta1+theta2];
-    %LfH=[0 0 1 0 0 0;1 1 0 0 0 0]*Fx;
-    %LfLfh=0;
+
 end
