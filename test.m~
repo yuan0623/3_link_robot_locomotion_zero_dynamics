@@ -55,11 +55,4 @@ De1(5,3)=De(3,5);
 De1(5,4)=De(4,5);
 De1(5,5)=2*m+Mh+Mt;
 %}
-syms alpha11 alpha10 alpha21 alpha20 alpha1M alpha1M_minus_1 alpha2M alpha2M_minus_1
-
-H=[0 1 0;0 0 1;1 0 0];
-R=[0 1 0;1 0 0;0 0 1];
-q1_dot_plus=0.9648;
-q1_dot_minus=1.6368;
-left_HS=[3.8348*(alpha11-alpha10);3.8348*(alpha21-alpha20);1]*q1_dot_plus;
-right_HS=H*delta_qdot/H*[3.8348*(alpha1M-alpha1M_minus_1);3.8348*(alpha2M-alpha2M_minus_1);1]*q1_dot_minus;
+syms alpha11 alpha10 alpha21 alpha20 alpha1M alpha1M_minus1 alpha2M alpha2M_minus

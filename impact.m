@@ -55,11 +55,28 @@ function [x_after,z_after,delta_qdot]=impact(x)
     x_after(6)=dqe_plus_1(3);
     z_after=dqe_plus_1(4:5);
     R=[0 1 0;1 0 0;0 0 1];
-    drdqs=[r*cos(theta1) 0 0;
-           -r*sin(theta1) 0 0];
+    drdqs=[0  0 0;
+           0 0 0];
     delta_f=-(E/De*E')\E*[eye(3);drdqs];
     delta_qdot_e=De\E'*delta_f+[eye(3);drdqs];
     delta_qdot=[R zeros(3,2)]*delta_qdot_e;
+    %below are from paper '1999 proving asymptotic stability of a walking cycle for a five dof biped robot'
+    %{
+    den=-3*m-4*Mh-2*Mt+2*m*cos(2*theta1-2*theta2)+2*Mt*cos(-2*theta2+2*theta3);
+    omega1_plus=1/den*(m*omega1-(4*m+4*Mh+2*Mt)*omega1*cos(2*theta1-2*theta2)+2*Mt*omega1*cos(2*theta1-2*theta3)+2*m*omega2*cos(theta1-theta2));
+    omega2_plus=1/den*(2*Mt*omega1*cos(-theta1+2*theta3-theta2)-(2*m+4*Mh+2*Mt)*omega1*cos(theta1-theta2)+m*omega2);
+    omega3_plus=1/(den*l)*((2*m*r+2*Mh*r+2*Mt*r)*omega1*cos(theta3+theta1-2*theta2)-2*Mh*r*omega1*cos(-theta1+theta3)...
+        -(2*m*r+2*Mt*r)*omega1*cos(-theta1+theta3)+m*r*omega1*cos(-3*theta1+2*theta2+theta3)-r*m*omega2*cos(-theta2+theta3)...
+        -(3*m*l+4*Mh*l+2*Mt*l)*omega3+2*m*l*omega3*cos(2*theta1-2*theta2)+2*Mt*l*omega3*cos(-2*theta2+2*theta3));
+    x_after(4)=omega2_plus;
+    x_after(5)=omega1_plus;
+    x_after(6)=omega3_plus;
     
-    
+    den=-3*m-4*Mh-2*Mt+2*m*cos(2*theta1-2*theta2)+2*Mt*cos(-2*theta2+2*theta3);
+    delta_qdot_prime=[(1/den)*(m-(4*m+4*Mh+2*Mt)*cos(2*theta1-2*theta2)+2*Mt*cos(2*theta1-2*theta3))                                                                                   (1/den)*(2*m*cos(theta1-theta2))       0;
+                      (1/den)*(2*Mt*cos(-theta1+2*theta3-theta2)-(2*m+4*Mh+2*Mt)*cos(theta1-theta2))                                                                                   (1/den)*m                              0;
+                      (1/(den*l))*((2*m*r+2*Mh*r+2*Mt*r)*cos(theta3+theta1-2*theta2)-2*Mh*r*cos(-theta1+theta3)-(2*m*r+2*Mt*r)*cos(-theta1+theta3)+m*r*cos(-3*theta1+2*theta2+theta3)) (1/(den*l))*(-r*m*cos(-theta2+theta3)) (1/(den*l))*(-(3*m*l+4*Mh*l+2*Mt*l)+2*m*l*cos(2*theta1-2*theta2)+2*Mt*l*cos(-2*theta2+2*theta3))];
+
+    delta_qdot=R*delta_qdot_prime;
+    %}
 end

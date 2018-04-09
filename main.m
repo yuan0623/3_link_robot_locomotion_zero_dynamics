@@ -1,4 +1,4 @@
-
+clear
 tspan=[0 10];
 x0=zeros(1,6);
 x0(1)=pi/20;
@@ -21,16 +21,16 @@ for i=1:step
         t=[t;t_each_step];
         x=[x;x_each_step];
     end
-    [x_after,z_after,~]=impact(x_each_step(end,:));
+    [x_after,z_after,delta_qdot]=impact(x_each_step(end,:));
     x0=x_after(1:6);
 
-    xixi=1;
+
 end
 
-hold on
-for i=1:2
-    plot(t,x(:,i))
-end
+%hold on
+%for i=1:2
+%    plot(t,x(:,i))
+%end
 
 %% compute Jacobian, in this case, it is a scalar.
 q1_star_minus=1.418944535884725;
@@ -45,7 +45,7 @@ for i=1:2
     x0(5)=-1.418778733622924;
     x0(6)=-3.093160702753254e-04;
 
-    [poincare(i,:),~,delta_qdot]=impact(x0);
+    [poincare(i,:),~,~]=impact(x0);
 end
 
 jacobian=(poincare(2,4)-poincare(1,4))/2*perturbation;

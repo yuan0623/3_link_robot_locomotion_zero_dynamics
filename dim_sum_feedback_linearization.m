@@ -17,8 +17,6 @@ function u=dim_sum_feedback_linearization(x,Fx,Gx)
     [th3desired,th1desired,alpha,epsilon]=control_params;
     [D,C,G,B]=dynamics_three_link_matrix(x);
     c_vector=C*[dth1;dth2;dth3]+G;
-    h=[th3-th3desired;
-        th1+th2];
     dhdq=[0 0 1;
           1 1 0];
     bqqdot=[0;0];
